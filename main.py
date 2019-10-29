@@ -21,7 +21,6 @@ def index():
     
     if request.method == "POST":    
         link=request.form.get("link")
-        global kod
         try:
             #Linki parçalayarak id kısmını alıyor
             kod = link[link.index("=")+1:]
@@ -35,7 +34,7 @@ def index():
 @app.route("/download/<string:id>")
 def download(id):    
     video = YouTube("http://youtube.com/watch?v="+id)
-    video_name = YouTube("http://youtube.com/watch?v="+id).title        
+    video_name = video.title        
     video.streams.filter(progressive=True,file_extension='mp4').first().download("FlaskYoutubeDownloader/download/")
     
 
