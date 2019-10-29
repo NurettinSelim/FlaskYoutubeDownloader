@@ -10,6 +10,7 @@ def temizle(kod):
     kod = kod.replace("|","")
     kod = kod.replace(".","")
     kod = kod.replace('"',"")
+    kod = kod.replace(':',"")
     kod = kod[:-3]
     kod = kod + ".mp4"
     return kod
