@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h1>Linki Tekrar Kontrol Edin!</h1>
+    <h6>Sayfa Yenileniyor...</h6>
+
+    <script>
+        //Sayfayı yenileme
+        setTimeout(function(){ location.href = self.location.href; }, 1200);
+    </script>
+
+{% endblock %}

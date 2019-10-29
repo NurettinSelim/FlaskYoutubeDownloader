@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<h3>Videonunz hazır</h3>
+<h1 style="color: darkgoldenrod">Video Adı</h1>
+<h3 style="color: darkgoldenrod" id= name1>{{title}}</h3>
+
+<a style="font-size: 20px; color:purple" href="javascript:DownloadAndRedirect()">Bas ve İndir</a>
+
+
+
+<script type="text/javascript">
+    
+    //Dosyayı indirip ana sayfaya yönleridiyor.
+    var name = document.getElementById("name1").textContent;
+    function DownloadAndRedirect()
+    {
+       var DownloadURL = "/file/"+ name +".mp4";
+       var RedirectURL = "/";
+       var RedirectPauseSeconds = 1;
+       location.href = DownloadURL;
+       setTimeout("DoTheRedirect('"+RedirectURL+"')",parseInt(RedirectPauseSeconds*1000));
+    }
+    function DoTheRedirect(url) { window.location=url; }
+
+</script>
+    
+{% endblock %}

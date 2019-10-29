@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+<div class = "container">
+    {% block  body %}
+    
+    <form action="/" method = "post">        
+        <div class="form-group">
+            <h3>Video Linki</h3>            
+        <div class="input">
+            <input  type="text"  name = "link" id="formGroupExampleInput" placeholder="Buraya yaz.">
+        </div>
+            <button onclick="clicked(this)" class="button" type = "submit" >Gönder</button><h3 id= "text1"></h3>
+        </div>
+    </form>
+    <script>
+        //Butona tıklandığı zaman butona tekrar basılmasını engellemek için görünmez yapıyor.
+        function clicked(element){
+            var yazi = document.getElementById("text1");
+            yazi.innerHTML = "Video Hazırlanıyor";
+            element.style.display = 'none';
+        }
+    </script>
+        
+    {% endblock  %}
+
+</div>
