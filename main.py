@@ -52,8 +52,8 @@ def download(id):
 
     name4= temizle4(video_name)
     name3= temizle3(video_name)
-
-    code= """ ffmpeg -i "D:\Python Projeleri\FlaskYoutubeDownloader\down\{}" -f mp3 -ab 128000 -vn "D:\Python Projeleri\FlaskYoutubeDownloader\down\{}" """.format(name4,name3)
+    path = "D:\Python Projeleri"
+    code = """ ffmpeg -i "{}\FlaskYoutubeDownloader\down\{}" -f mp3 -ab 128000 -vn "{}\FlaskYoutubeDownloader\down\{}" """.format(path,name4,path,name3)
     print(code)
     os.system(code)
     return render_template("start.html",title = video_name[:-3])
