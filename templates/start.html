@@ -1,29 +1,27 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1 style="display:none;" id="name1">{{title}}</h1>
-<h3 class="deftext top">Videonuz hazır</h3>
 
-<h1 class="video-name">Video Adı: {{title}}</h1>
+    <div id="video_id" style="display:none">{{id}}</div>
 
-<a class="download" href="javascript:DownloadAndRedirect()">Bas ve İndir</a>
+    <h3 class="deftext top">Videonuz hazır</h3>
 
+    <h1 class="video-name">Video Adı: {{title}}</h1>
+
+    <a class="download" href="javascript:DownloadAndRedirect()">Bas ve İndir</a>
 
 
 <script type="text/javascript">
-    
     //Dosyayı indirip ana sayfaya yönleridiyor.
-    var name = document.getElementById("name1").textContent;
+    const id = document.getElementById("video_id").textContent;
     function DownloadAndRedirect()
     {
-        var DownloadURL = "/file/"+name+".mp3";
+        var DownloadURL = "/file/"+id;
         var RedirectURL = "/";
         var RedirectPauseSeconds = 9;
         location.href = DownloadURL;
         setTimeout("DoTheRedirect('"+RedirectURL+"')",parseInt(RedirectPauseSeconds*1000));
     }
     function DoTheRedirect(url) { window.location=url; }
-
-
 </script>
     
 {% endblock %}

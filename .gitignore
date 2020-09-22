@@ -1,2 +1,7 @@
-.vscode
+__pycache__/
+downloads/
+.vscode/
+.idea/
+venv/
+id_list.csv
 ffmpeg.exe

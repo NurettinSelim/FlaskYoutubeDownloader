@@ -1,68 +1,58 @@
+from flask import Flask, render_template, request, redirect, send_from_directory
 
-#Kullanılacak Modüller
-from flask import Flask,render_template,request,redirect,send_from_directory,abort
-from pytube import YouTube
-import os
+import downloader
+
+path = "D:/Python Projeleri/FlaskYoutubeDownloader/downloads/%(title)s.%(ext)s"
 
 app = Flask(__name__)
 
-#Sorun çıkartan karakterler dosya adından silen foksiyon
-def temizle3(kod): 
-    kod = kod.replace("|","")
-    kod = kod.replace(".","")
-    kod = kod.replace('"',"")
-    kod = kod.replace(':',"")
-    kod = kod.replace('#',"")
-    kod = kod[:-3]
-    kod = kod + ".mp3"
-    return kod
-def temizle4(kod): 
-    kod = kod.replace("|","")
-    kod = kod.replace(".","")
-    kod = kod.replace('"',"")
-    kod = kod.replace(':',"")
-    kod = kod.replace('#',"")
-    kod = kod[:-3]
-    kod = kod + ".mp4"
-    return kod
+
+def save_id(video_id, name, ext):
+    with open("id_list.csv", mode="a+") as file:
+        file.write(f"{video_id}:{name}.{ext}\n")
 
 
-#Ana Sayfa
-@app.route("/",methods=["POST","GET"])
+def get_name_from_id(video_id):
+    with open("id_list.csv", mode="r") as file:
+        for num, line in enumerate(file.readlines()):
+            if line.startswith(video_id):
+                return line.split(':')[1].strip()
+
+    return None
+
+
+# Main Page
+@app.route("/", methods=["POST", "GET"])
 def index():
-    
-    if request.method == "POST":    
-        link=request.form.get("link")
+    if request.method == "POST":
+        link = request.form.get("link")
         try:
-            #Linki parçalayarak id kısmını alıyor
-            kod = link[link.index("=")+1:]
+            kod = link[link.index("=") + 1:]
         except ValueError:
             return render_template("refresh.html")
-            
-        return redirect("/download/"+ kod)
-    else:    
+
+        return redirect("/download/" + kod)
+    else:
         return render_template("home.html")
 
-@app.route("/download/<string:id>")
-def download(id):    
-    video = YouTube("http://youtube.com/watch?v="+id)
-    video_name = video.title 
-    video_name = video_name+".mp4"       
-    video.streams.filter(only_audio=True,file_extension='mp4').first().download("down/")
 
-    name4= temizle4(video_name)
-    name3= temizle3(video_name)
-    path = "D:\Python Projeleri"
-    code = """ ffmpeg -i "{}\FlaskYoutubeDownloader\down\{}" -f mp3 -ab 128000 -vn "{}\FlaskYoutubeDownloader\down\{}" """.format(path,name4,path,name3)
-    print(code)
-    os.system(code)
-    return render_template("start.html",title = video_name[:-3])
+# Download Request Page
+@app.route("/download/<string:video_id>")
+def download(video_id):
+    video = downloader.download_mp3("http://youtube.com/watch?v=" + video_id, path)
+    save_id(video["display_id"], video["title"], "mp3")
+    return render_template("start.html", id=video["display_id"], title=video["title"])
 
-@app.route("/file/<string:name>")
-def file(name):
-    print(temizle3(name))
-    return send_from_directory("down/",temizle3(name),as_attachment=True)
+
+# Download Page
+@app.route("/file/<string:video_id>")
+def file(video_id):
+    name = get_name_from_id(video_id)
+    if name == None:
+        return render_template("refresh.html")
+
+    return send_from_directory("downloads/", name, as_attachment=True)
 
 
 if __name__ == "__main__":
-    app.run(debug=True) 
+    app.run(debug=True)
