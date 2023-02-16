@@ -4,5 +4,5 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
 typing-extensions==3.7.4.3
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 youtube-dl==2020.9.20
